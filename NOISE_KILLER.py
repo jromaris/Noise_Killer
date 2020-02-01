@@ -100,12 +100,12 @@ def cancel_noise(filename):
     plt.grid(True)
     plt.legend(loc='lower left')
     plt.show()
-    ""
+    """
 
     #Escribo el wav del audio filtrado
     wavio.write("salida_filtrada.wav", output, fs, sampwidth=3) 
     return output, audio, fs
 
 
-cancel_noise(archivo)
+
 

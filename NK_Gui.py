@@ -21,11 +21,18 @@ class NK_gui(QMainWindow):
 
         self.audio_path= ""
         
+        self.noise_path= ""
+
         self.setWindowTitle("Noise killer")
 
         self.Button_seleccionar_audio.clicked.connect(self.buscar_audio)
+        
+        self.Button_select_ns.clicked.connect(self.buscar_ns)
 
         self.Button_kill_noise.clicked.connect(self.kill_noise)
+
+
+        
 
 
     def buscar_audio(self):
@@ -36,15 +43,28 @@ class NK_gui(QMainWindow):
            
         self.Selected_audio.setText(str(filePath))
         self.audio_path =filePath
-        print(self.audio_path)
+        
+    def buscar_ns(self):
+
+        filePath, _ = QFileDialog.getOpenFileName(self,'Search file', '/home')
+        
+
+           
+        self.Selected_ns.setText(str(filePath))
+        self.noise_path =filePath
+        print(self.noise_path)
 
     def kill_noise(self):
         if (self.audio_path != ""):
             #meter aca el noise_killer
-            print("hace algo")
-            self.open_window()
+            if(self.noise_path == ""):  #para que ande bien descomentar esta garcha
+                #self.popup_ns_not_selected()
+                self.open_window()
+            else:
+                print("hace algo")
+                self.open_window()
             #iniciar la nueva ventana
-        else:
+        elif (self.audio_path == ""):
             self.popup_audio_not_selected()
             #self.open_window()
 
@@ -55,8 +75,15 @@ class NK_gui(QMainWindow):
         msg.setIcon(QMessageBox.Warning)
         x = msg.exec_()
 
+    def popup_ns_not_selected(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("Select audio")
+        msg.setText("Warning: no noise sample file selected")
+        msg.setIcon(QMessageBox.Warning)
+        x = msg.exec_()
+
     def open_window(self):
-        self.window=Second_window(self.audio_path)
+        self.window=Second_window(self.audio_path,self.noise_path)
         self.window.setWindowTitle("Noise killer")
         self.window.show()
 
