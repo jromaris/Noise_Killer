@@ -10,7 +10,7 @@ path = os.path.dirname(os.path.abspath(__file__))
 
 class Second_window(QWidget):
 
-    def __init__(self,parent = None):
+    def __init__(self,audio_name,noise_name = None,parent = None):
 
         QWidget.__init__(self, parent)
         
@@ -21,7 +21,9 @@ class Second_window(QWidget):
         self.Button_playO.clicked.connect(self.play_original)
         self.Button_playNK.clicked.connect(self.play_NK)
         self.Button_playAF.clicked.connect(self.play_AF)
-
+        self.audio_path= audio_name
+        self.noise_path= noise_name
+        print(self.audio_path)
         
 
     def clear_graph(self):

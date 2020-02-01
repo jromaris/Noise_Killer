@@ -56,7 +56,7 @@ class NK_gui(QMainWindow):
         x = msg.exec_()
 
     def open_window(self):
-        self.window=Second_window()
+        self.window=Second_window(self.audio_path)
         self.window.setWindowTitle("Noise killer")
         self.window.show()
 
