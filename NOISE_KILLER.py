@@ -17,13 +17,23 @@ archivo="el_gato.wav"
 #Tamaño de ventana
 WINDOW_SIZE = 512*3
 
-def read_audio(filename):
-    wav = wavio.read(filename)
+def read_audio(audio_name, noise_name=None, is_LMS=False):
+    wav = wavio.read(audio_name)
     input_audio=wav.data[:,0]
     input_audio = input_audio/np.max(np.abs(input_audio),axis=0)
     fs=wav.rate
     print("Frecuencia de muestreo",fs)
-    return input_audio,fs
+
+    input_noise = []
+s
+    if !is_LMS and noise_name != None:
+        wav = wavio.read(noise_name)
+        input_noise=wav.data[:,0]
+        input_noise = input_noise/np.max(np.abs(input_audio),axis=0)
+        fs=wav.rate
+        print("Frecuencia de muestreo",fs)
+
+    return input_audio, fs, input_noise
 
 def cancel_noise(filename):
 
