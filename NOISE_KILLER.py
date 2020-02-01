@@ -25,8 +25,8 @@ def read_audio(audio_name, noise_name=None, is_LMS=False):
     print("Frecuencia de muestreo",fs)
 
     input_noise = []
-s
-    if !is_LMS and noise_name != None:
+
+    if not(is_LMS) and noise_name != None:
         wav = wavio.read(noise_name)
         input_noise=wav.data[:,0]
         input_noise = input_noise/np.max(np.abs(input_audio),axis=0)
@@ -38,7 +38,7 @@ s
 def cancel_noise(filename):
 
     #Leo el archivo de audio deseado
-    input_audio, fs =read_audio(filename)
+    input_audio, fs, _ =read_audio(filename)
 
     #Vector que contiene la energía media del ruido 
     noise_mean=np.zeros(int(WINDOW_SIZE/2)+1)
@@ -100,7 +100,7 @@ def cancel_noise(filename):
     plt.grid(True)
     plt.legend(loc='lower left')
     plt.show()
-    """
+    ""
 
     #Escribo el wav del audio filtrado
     wavio.write("salida_filtrada.wav", output, fs, sampwidth=3) 
