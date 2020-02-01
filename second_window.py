@@ -7,7 +7,12 @@ from PyQt5.uic import loadUi
 import NOISE_KILLER as NK
 import sounddevice as sd
 import Adaptive_filter as adf
-
+from math import pi
+import scipy as sp
+from scipy import signal
+from matplotlib.colors import BoundaryNorm
+from matplotlib.ticker import MaxNLocator
+import numpy as np
 path = os.path.dirname(os.path.abspath(__file__))
 
 class Second_window(QWidget):
@@ -32,6 +37,8 @@ class Second_window(QWidget):
 
     def clear_graph(self):
         print("borrar todos los datos")
+        self.MplWidget.canvas.axes.clear()
+        self.MplWidget.canvas.draw()
         
         
     def update_graph(self,chk_o,chk_nk,chk_af):
@@ -42,22 +49,27 @@ class Second_window(QWidget):
             
         else:
             if(self.check_freq.isChecked()):
-                aux=0       #para saber si hacer el espectograma o en tiempo
+                if(chk_o):
+                    self.specto_patronum(self.original_audio,self.fs)       #para saber si hacer el espectograma o en tiempo
+                elif chk_nk:
+                    self.specto_patronum(self.nk_audio,self.fs) 
+                elif chk_af:
+                    self.specto_patronum(self.af_audio,self.fs) 
+                    
             elif self.check_time.isChecked():
-                aux=1
-            self.MplWidget.canvas.axes.clear()
-            if (chk_o):
-                self.MplWidget.canvas.axes.plot(self.original_audio,label="Audio con ruido")
-                print("press original")
-            if chk_nk:
-                self.MplWidget.canvas.axes.plot(self.nk_audio,label="Audio filtrado")
-                print("grahp nk")
-            if chk_af:
-                self.MplWidget.canvas.axes.plot(self.af_audio,label="Audio filtrado adaptativamente")
-                print("graph af")
-            self.MplWidget.canvas.axes.grid(True)
-            self.MplWidget.canvas.axes.legend(loc='lower left')
-            self.MplWidget.canvas.draw()
+                self.MplWidget.canvas.axes.clear()
+                if (chk_o):
+                    self.MplWidget.canvas.axes.plot(self.original_audio,label="Audio con ruido")
+                    print("press original")
+                if chk_nk:
+                    self.MplWidget.canvas.axes.plot(self.nk_audio,label="Audio filtrado")
+                    print("grahp nk")
+                if chk_af:
+                    self.MplWidget.canvas.axes.plot(self.af_audio,label="Audio filtrado adaptativamente")
+                    print("graph af")
+                self.MplWidget.canvas.axes.grid(True)
+                self.MplWidget.canvas.axes.legend(loc='lower left')
+                self.MplWidget.canvas.draw()
 
             
     def play_original(self):
@@ -92,3 +104,22 @@ class Second_window(QWidget):
         msg.setText("Please select one option: time or frequency")
         msg.setIcon(QMessageBox.Critical)
         x = msg.exec_()
+
+
+
+    def specto_patronum(self,senal,frec_sampleo=1.0,overlap=None,ventana=None,largo_ventana=None):
+
+        if ventana is None:
+            f, t, Sxx=signal.spectrogram(senal,frec_sampleo,window='hanning',nperseg=512,noverlap=overlap)
+        elif isinstance(ventana, str):
+            new_ventana=ventana(largo_ventana)          #para crear una ventana nueva y pasarsela como arreglo al espectograma
+            f,t, Sxx=signal.spectrogram(senal,frec_sampleo,new_ventana,noverlap=overlap)
+        else:
+            f,t,Sxx=signal.spectrogram(senal,frec_sampleo,ventana,noverlap=overlap)
+        Sxx= np.log10(Sxx)
+        self.MplWidget.canvas.axes.clear()
+        colores=plt.get_cmap('plasma')
+        im = self.MplWidget.canvas.axes.pcolormesh(t, f, Sxx,cmap=colores)
+        #self.MplWidget.canvas.colorbar(im)
+        self.MplWidget.canvas.draw()
+            
