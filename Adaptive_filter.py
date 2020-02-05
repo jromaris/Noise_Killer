@@ -30,7 +30,7 @@ def adaptive_cancel(audio_file,noise_file,M):
 	audio_blocks = np.array_split(padd_audio,number_of_blocks)
 	noise_blocks = np.array_split(padd_noise,number_of_blocks)
 	
-	filt = FastBlockLMSFilter(length, blocklength, stepsize=0.1, leakage=0.9999, constrained=False, normalized=True)
+	filt = FastBlockLMSFilter(length, blocklength, stepsize=0.05, leakage=0.9999, constrained=False, normalized=True)
 	
 	elog = []
 	felog = []

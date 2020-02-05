@@ -14,9 +14,6 @@ from terminate_noise import terminate_noise
 
 archivo="el_gato.wav"
 
-#Tamaño de ventana
-WINDOW_SIZE = 512*3
-
 def read_audio(audio_name, noise_name=None, is_LMS=False):
     wav = wavio.read(audio_name)
     input_audio=wav.data[:,0]
@@ -40,12 +37,17 @@ def cancel_noise(filename):
     #Leo el archivo de audio deseado
     input_audio, fs, _ =read_audio(filename)
 
+    # Tamaño de ventana
+    WINDOW_SIZE = int(fs*256/8000)
+
+    WINDOW_SIZE =round(WINDOW_SIZE/2)*2
+
     #Vector que contiene la energía media del ruido 
     noise_mean=np.zeros(int(WINDOW_SIZE/2)+1)
     
     #Cantidad de ventanas 
-    win_num=np.ceil(float(len(input_audio)-WINDOW_SIZE+1)/float(WINDOW_SIZE/2))
-    
+    win_num=int(np.ceil(float(len(input_audio)-WINDOW_SIZE+1)/float(WINDOW_SIZE/2)))
+    print(win_num)
     #En caso de ser necesario agrego zero padding
     if (win_num*(WINDOW_SIZE/2)+WINDOW_SIZE/2) < len(input_audio):
         audio=zeros(len(input_audio))
@@ -63,15 +65,15 @@ def cancel_noise(filename):
     
     #Media ventanta temporal utilizada para hacer Overlap and Add
     temp_win=zeros(int(WINDOW_SIZE/2))
-    
+
     for i in range(int(win_num)):
-    
+
         #Aplico la ventana
         curr_win=audio[int(WINDOW_SIZE/2)*i:int(WINDOW_SIZE/2)*(i+2)]*hanning
-    
+
         #Opero
-        curr_win,noise_mean=terminate_noise(curr_win,i,noise_mean,WINDOW_SIZE,10,8)
-    
+        curr_win,noise_mean=terminate_noise(curr_win,i,noise_mean,WINDOW_SIZE,10,4)
+
         #Calculo la salida
         output[i*int(WINDOW_SIZE/2):(i+1)*int(WINDOW_SIZE/2)]=curr_win[0:int(WINDOW_SIZE/2)]+temp_win
       
@@ -102,10 +104,7 @@ def cancel_noise(filename):
     plt.show()
     """
 
+
     #Escribo el wav del audio filtrado
     wavio.write("salida_filtrada.wav", output, fs, sampwidth=3) 
     return output, audio, fs
-
-
-
-

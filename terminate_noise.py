@@ -51,7 +51,7 @@ def terminate_noise(curr_win,win_number,noise_mean,window_len,noise_win_num,max_
         out_data=data*H
  
         #Controlo la energia de la ventana en relación a la media del ruido
-        energy_cntnt=20*np.log10(np.sum(np.absolute(out_data/noise_mean)/len(out_data)))
+        energy_cntnt=20*np.log10(0.0001+np.sum(np.absolute(out_data/noise_mean)/len(out_data)))
         #print(energy_cntnt)
       
         if energy_cntnt < -15:

@@ -55,16 +55,21 @@ class NK_gui(QMainWindow):
         print(self.noise_path)
 
     def kill_noise(self):
+        print("AAAA")
         if (self.audio_path != ""):
+            print("BBBB")
             #meter aca el noise_killer
             if(self.noise_path == ""):  #para que ande bien descomentar esta garcha
                 #self.popup_ns_not_selected()
+                print("CCCC")
                 self.open_window()
             else:
                 print("hace algo")
                 self.open_window()
             #iniciar la nueva ventana
         elif (self.audio_path == ""):
+            print("DDDD")
+
             self.popup_audio_not_selected()
             #self.open_window()
 
@@ -96,12 +101,6 @@ if __name__ == "__main__":
     app.exec_()
 
 
-
-
-
-
-
-
 # Ui_MainWindow, QtBaseClass = uic.loadUiType( os.path.join(path, 'test.ui'))
 
 # class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -115,15 +114,12 @@ if __name__ == "__main__":
 #         self.Button_Graph.clicked.connect(self.plot)
         
 
-
 #     #Esta función abre el archivo CSV    
 #     def getCSV(self):
 #         filePath, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', '/home')
 #         if filePath != "":
 #             print ("Dirección",filePath) #Opcional imprimir la dirección del archivo
 #             self.df = pd.read_csv(str(filePath))
-        
-
 
 #     #Aquí van las nuevas funciones
 #     def plot(self):
@@ -134,7 +130,6 @@ if __name__ == "__main__":
 #         estad_st="Estadisticas de col2: "+str(self.df['col2'].describe())
 #         self.Result.setText(estad_st)
 
-  
 # if __name__ == "__main__":
 #     app =  QtWidgets.QApplication(sys.argv)
 #     window = MyApp()

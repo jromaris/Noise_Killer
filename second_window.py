@@ -10,6 +10,9 @@ import Adaptive_filter as adf
 from math import pi
 import scipy as sp
 from scipy import signal
+
+import seaborn as sns
+
 from matplotlib.colors import BoundaryNorm
 from matplotlib.ticker import MaxNLocator
 import numpy as np
@@ -33,7 +36,7 @@ class Second_window(QWidget):
         
         self.nk_audio, self.original_audio, self.fs = NK.cancel_noise(self.audio_path) 
 
-        self.original_audio, self.af_audio, self.fs, _ = adf.adaptive_cancel(self.audio_path,self.noise_path,100)    
+        self.original_audio, self.af_audio, self.fs, _ = adf.adaptive_cancel(self.audio_path,self.noise_path,100)
 
     def clear_graph(self):
         print("borrar todos los datos")
