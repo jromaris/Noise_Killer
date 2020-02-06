@@ -72,7 +72,7 @@ def cancel_noise(filename):
         curr_win=audio[int(WINDOW_SIZE/2)*i:int(WINDOW_SIZE/2)*(i+2)]*hanning
 
         #Opero
-        curr_win,noise_mean=terminate_noise(curr_win,i,noise_mean,WINDOW_SIZE,10,4)
+        curr_win,noise_mean=terminate_noise(curr_win,i,noise_mean,WINDOW_SIZE,14,3)
 
         #Calculo la salida
         output[i*int(WINDOW_SIZE/2):(i+1)*int(WINDOW_SIZE/2)]=curr_win[0:int(WINDOW_SIZE/2)]+temp_win
@@ -108,3 +108,5 @@ def cancel_noise(filename):
     #Escribo el wav del audio filtrado
     wavio.write("salida_filtrada.wav", output, fs, sampwidth=3) 
     return output, audio, fs
+
+cancel_noise("homero1_ruido.wav")
