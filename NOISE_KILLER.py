@@ -40,14 +40,13 @@ def cancel_noise(filename):
     # Tamaño de ventana
     WINDOW_SIZE = int(fs*256/8000)
 
-    WINDOW_SIZE =round(WINDOW_SIZE/2)*2
+    WINDOW_SIZE =round(WINDOW_SIZE/2)*2+2000
 
     #Vector que contiene la energía media del ruido 
     noise_mean=np.zeros(int(WINDOW_SIZE/2)+1)
     
     #Cantidad de ventanas 
     win_num=int(np.ceil(float(len(input_audio)-WINDOW_SIZE+1)/float(WINDOW_SIZE/2)))
-    print(win_num)
     #En caso de ser necesario agrego zero padding
     if (win_num*(WINDOW_SIZE/2)+WINDOW_SIZE/2) < len(input_audio):
         audio=zeros(len(input_audio))
